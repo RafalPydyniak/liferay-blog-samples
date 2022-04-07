@@ -1,0 +1,74 @@
+services:
+  pydyniak-samples-liferay:
+    image: liferay/portal:7.4.3.18-ga18
+    container_name: pydyniak-samples-lr
+    user: root
+    depends_on:
+      pydyniak-samples-db:
+        condition: service_healthy
+    environment:
+      - LIFERAY_JVM_OPTS=-Xms4g -Xmx4g -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1165 -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.port=5600 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false
+      - LIFERAY_SESSION_PERIOD_TIMEOUT=120
+      - LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED=false
+      - LIFERAY_PASSWORDS_PERIOD_DEFAULT_PERIOD_POLICY_PERIOD_CHANGE_PERIOD_REQUIRED=FALSE
+      - LIFERAY_COMPANY_PERIOD_DEFAULT_PERIOD_LOCALE=en_US
+      - LIFERAY_COMPANY_PERIOD_DEFAULT_PERIOD_TIME_PERIOD_ZONE=Europe/Warsaw
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_DRIVER_UPPERCASEC_LASS_UPPERCASEN_AME=org.mariadb.jdbc.Driver
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_USERNAME=liferay
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_PASSWORD=liferay
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_URL=jdbc:mariadb://pydyniak-samples-db/liferay?characterEncoding=UTF-8&useUnicode=true
+      - LIFERAY_COMPANY_PERIOD_SECURITY_PERIOD_STRANGERS_PERIOD_VERIFY=false
+      - LIFERAY_TEMPLATE_PERIOD_ENGINE_PERIOD_SERVICE_PERIOD_LOCATOR_PERIOD_RESTRICT=false
+      - LIFERAY_THEME_PERIOD_CSS_PERIOD_FAST_PERIOD_LOAD=false
+      - LIFERAY_THEME_PERIOD_IMAGES_PERIOD_FAST_PERIOD_LOAD=false
+      - LIFERAY_JAVASCRIPT_PERIOD_FAST_PERIOD_LOAD=false
+      - LIFERAY_LAYOUT_PERIOD_TEMPLATE_PERIOD_CACHE_PERIOD_ENABLED=false
+      - LIFERAY_MINIFIER_PERIOD_ENABLED=false
+    volumes:
+      - ./liferay/deploy:/opt/liferay/deploy:Z
+      - ./liferay/osgi/modules:/opt/liferay/osgi/modules:Z
+      - ./liferay/osgi/war:/opt/liferay/osgi/war:Z
+      - ./liferay/osgi/configs:/opt/liferay/osgi/configs:Z
+      - /etc/localtime:/etc/localtime:ro
+      - liferay-document-library:/opt/liferay/data/document_library
+    ports:
+      - "8080:8080"
+      - "1165:1165" #remote debug address
+      - "5600:5600" #jmxremote.port
+      - "22322:11311"
+    networks:
+      - pydyniak-samples
+
+  pydyniak-samples-db:
+    image: mariadb:10.4
+    container_name: pydyniak-samples-db
+    environment:
+      - "MYSQL_ROOT_PASSWORD=root"
+      - "MYSQL_USER=liferay"
+      - "MYSQL_PASSWORD=liferay"
+      - "MYSQL_DATABASE=liferay"
+    volumes:
+      - ./mariadb/mariadb.cnf:/etc/mysql/mariadb.cnf:Z
+      - ./mariadb/init-scripts:/docker-entrypoint-initdb.d/:Z
+      - /etc/localtime:/etc/localtime:ro
+      - mariadb-data:/var/lib/mysql:Z
+    ports:
+      - "3306:3306"
+    networks:
+      - pydyniak-samples
+    healthcheck:
+      test: mysqladmin ping -h localhost -u liferay -pliferay
+      start_period: 10s
+      interval: 1m
+      timeout: 5s
+      retries: 3
+
+networks:
+  pydyniak-samples:
+    driver: bridge
+
+volumes:
+  mariadb-data:
+    driver: local
+  liferay-document-library:
+    driver: local

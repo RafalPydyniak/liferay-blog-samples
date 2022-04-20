@@ -24,17 +24,19 @@ services:
       - LIFERAY_JAVASCRIPT_PERIOD_FAST_PERIOD_LOAD=false
       - LIFERAY_LAYOUT_PERIOD_TEMPLATE_PERIOD_CACHE_PERIOD_ENABLED=false
       - LIFERAY_MINIFIER_PERIOD_ENABLED=false
+      - LIFERAY_RESOURCE_PERIOD_ACTIONS_PERIOD_CONFIGS=META-INF/resource-actions/default.xml,resource-actions/default.xml,resource-actions/default-ext.xml
     volumes:
       - ./liferay/deploy:/opt/liferay/deploy:Z
       - ./liferay/osgi/modules:/opt/liferay/osgi/modules:Z
       - ./liferay/osgi/war:/opt/liferay/osgi/war:Z
       - ./liferay/osgi/configs:/opt/liferay/osgi/configs:Z
+      - ./liferay/tomcat:/mnt/liferay/files/tomcat:Z
       - /etc/localtime:/etc/localtime:ro
       - liferay-document-library:/opt/liferay/data/document_library
     ports:
-      - "8080:8080"
-      - "1165:1165" #remote debug address
-      - "5600:5600" #jmxremote.port
+      - "8088:8080"
+      - "1165:1165"
+      - "5600:5600"
       - "22322:11311"
     networks:
       - pydyniak-samples
@@ -53,7 +55,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - mariadb-data:/var/lib/mysql:Z
     ports:
-      - "3306:3306"
+      - "3309:3306"
     networks:
       - pydyniak-samples
     healthcheck:

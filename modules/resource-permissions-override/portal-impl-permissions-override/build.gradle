@@ -1,0 +1,3 @@
+deploy() {
+    into "$rootDir/docker/liferay/tomcat/lib"
+}

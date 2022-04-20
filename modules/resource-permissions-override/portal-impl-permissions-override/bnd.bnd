@@ -1,0 +1,3 @@
+Bundle-Name: portal-impl-permissions-override
+Bundle-SymbolicName: portal-impl.permissions.override
+Bundle-Version: 1.0.0

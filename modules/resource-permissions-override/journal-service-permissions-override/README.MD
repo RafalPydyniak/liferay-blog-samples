@@ -8,7 +8,8 @@ As a sample two changes were made:
 
 This module servers as a proof of concept and an example how such change can be done.
 
-Please read the full article on https://pydyniak.com for more details.
+See a [Overriding Liferay Core Permissions article](http://localhost:8000/overriding-liferay-core-permissions/)
+for more details.
 
 # How to use it
 Simply deploy the module. No extra config required. No restart of portal required

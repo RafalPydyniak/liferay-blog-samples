@@ -1,0 +1,4 @@
+Bundle-Name: not-resolved-bundles-api
+Bundle-SymbolicName: com.pydyniak.blog.samples.not.resolved.bundles.api
+Bundle-Version: 1.0.0
+Export-Package: com.pydyniak.blog.samples.not.resolved.bundles.api.api

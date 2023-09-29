@@ -20,21 +20,20 @@ public class EventModelSummaryContributor implements ModelSummaryContributor {
     @Override
     public Summary getSummary(Document document, Locale locale, String snippet) {
         String languageId = LocaleUtil.toLanguageId(locale);
-        return createSummary(document, LocalizationUtil.getLocalizedName(Field.CONTENT, languageId),
-                LocalizationUtil.getLocalizedName(Field.TITLE, languageId));
+        return createSummary(document, LocalizationUtil.getLocalizedName(Field.TITLE, languageId),
+                LocalizationUtil.getLocalizedName(Field.CONTENT, languageId));
     }
 
-    private Summary createSummary(
-            Document document, String contentField, String titleField) {
+    protected Summary createSummary(
+            Document document, String titleField, String contentField) {
 
         String prefix = Field.SNIPPET + StringPool.UNDERLINE;
 
         String title = document.get(prefix + titleField, titleField);
         String content = document.get(prefix + contentField, contentField);
-        Summary summary = new Summary(HtmlUtil.extractText(title), HtmlUtil.extractText(content));
 
+        Summary summary = new Summary(title, content);
         summary.setMaxContentLength(200);
-
         return summary;
     }
 }

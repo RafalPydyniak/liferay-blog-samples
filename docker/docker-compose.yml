@@ -1,13 +1,12 @@
 services:
   pydyniak-samples-liferay:
-    image: liferay/portal:7.4.3.18-ga18
-    container_name: pydyniak-samples-lr
+    image: liferay/portal:7.4.3.89-ga89
     user: root
     depends_on:
       pydyniak-samples-db:
         condition: service_healthy
     environment:
-      - LIFERAY_JVM_OPTS=-Xms4g -Xmx4g -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:1145 -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.port=5500 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false
+      - LIFERAY_JVM_OPTS=-Xms4g -Xmx4g -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1145 -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.port=5500 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false
       - LIFERAY_SESSION_PERIOD_TIMEOUT=120
       - LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED=false
       - LIFERAY_PASSWORDS_PERIOD_DEFAULT_PERIOD_POLICY_PERIOD_CHANGE_PERIOD_REQUIRED=FALSE
@@ -24,26 +23,28 @@ services:
       - LIFERAY_JAVASCRIPT_PERIOD_FAST_PERIOD_LOAD=false
       - LIFERAY_LAYOUT_PERIOD_TEMPLATE_PERIOD_CACHE_PERIOD_ENABLED=false
       - LIFERAY_MINIFIER_PERIOD_ENABLED=false
-      - LIFERAY_RESOURCE_PERIOD_ACTIONS_PERIOD_CONFIGS=META-INF/resource-actions/default.xml,resource-actions/default.xml,resource-actions/default-ext.xml
+#      - LIFERAY_RESOURCE_PERIOD_ACTIONS_PERIOD_CONFIGS=META-INF/resource-actions/default.xml,resource-actions/default.xml,resource-actions/default-ext.xml
+      - LIFERAY_UPGRADE_PERIOD_DATABASE_PERIOD_AUTO_PERIOD_RUN=true
+      - LIFERAY_VIRTUAL_PERIOD_HOSTS_PERIOD_VALID_PERIOD_HOSTS=localhost,127.0.0.1,[::1],[0:0:0:0:0:0:0:1],pydyniak.local
+
+
     volumes:
       - ./liferay/deploy:/opt/liferay/deploy:Z
       - ./liferay/osgi/modules:/opt/liferay/osgi/modules:Z
       - ./liferay/osgi/war:/opt/liferay/osgi/war:Z
       - ./liferay/osgi/configs:/opt/liferay/osgi/configs:Z
-      - ./liferay/tomcat:/mnt/liferay/files/tomcat:Z
       - /etc/localtime:/etc/localtime:ro
       - liferay-document-library:/opt/liferay/data/document_library
     ports:
-      - "8088:8080"
+      - "8080:8080"
       - "1145:1145"
       - "5500:5500"
-      - "22322:11311"
+      - "11311:11311"
     networks:
       - pydyniak-samples
 
   pydyniak-samples-db:
     image: mariadb:10.4
-    container_name: pydyniak-samples-db
     environment:
       - "MYSQL_ROOT_PASSWORD=root"
       - "MYSQL_USER=liferay"
@@ -55,7 +56,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - mariadb-data:/var/lib/mysql:Z
     ports:
-      - "3309:3306"
+      - "3306:3306"
     networks:
       - pydyniak-samples
     healthcheck:

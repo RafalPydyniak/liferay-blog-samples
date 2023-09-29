@@ -7,7 +7,7 @@ services:
       pydyniak-samples-db:
         condition: service_healthy
     environment:
-      - LIFERAY_JVM_OPTS=-Xms4g -Xmx4g -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1165 -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.port=5600 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false
+      - LIFERAY_JVM_OPTS=-Xms4g -Xmx4g -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:1145 -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.port=5500 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false
       - LIFERAY_SESSION_PERIOD_TIMEOUT=120
       - LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED=false
       - LIFERAY_PASSWORDS_PERIOD_DEFAULT_PERIOD_POLICY_PERIOD_CHANGE_PERIOD_REQUIRED=FALSE
@@ -35,8 +35,8 @@ services:
       - liferay-document-library:/opt/liferay/data/document_library
     ports:
       - "8088:8080"
-      - "1165:1165"
-      - "5600:5600"
+      - "1145:1145"
+      - "5500:5500"
       - "22322:11311"
     networks:
       - pydyniak-samples

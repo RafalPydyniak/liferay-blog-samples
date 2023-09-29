@@ -4,16 +4,16 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class UnresolvedBundlesUtil {
+    private UnresolvedBundlesUtil(){}
 
     public static String listUnresolvedBundles(BundleContext bundleContext) {
-        StringBuilder message = new StringBuilder();
-        Arrays.stream(bundleContext.getBundles())
+        return Arrays.stream(bundleContext.getBundles())
                 .filter(UnresolvedBundlesUtil::isInInstalledState)
-                .forEach(bundle -> appendBundleToResultMessage(message, bundle));
-
-        return message.toString();
+                .map(UnresolvedBundlesUtil::getMessage)
+                .collect(Collectors.joining());
     }
 
     /**
@@ -25,11 +25,13 @@ public class UnresolvedBundlesUtil {
         return Bundle.INSTALLED == bundle.getState();
     }
 
-    private static void appendBundleToResultMessage(StringBuilder message, Bundle bundle) {
+    private static String getMessage(Bundle bundle) {
+        StringBuilder message = new StringBuilder();
         message.append("\n\tBundle {id: ");
         message.append(bundle.getBundleId());
         message.append(", symbolicName: ");
         message.append(bundle.getSymbolicName());
         message.append("} is unresolved");
+        return message.toString();
     }
 }

@@ -1,0 +1,11 @@
+Bundle-Name: Event Api
+Bundle-SymbolicName: com.pydyniak.blog.samples.event.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.pydyniak.blog.samples.event.exception,\
+	com.pydyniak.blog.samples.event.model,\
+	com.pydyniak.blog.samples.event.service,\
+	com.pydyniak.blog.samples.event.service.persistence,\
+    com.pydyniak.blog.samples.event.constants
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../event-service/service.xml

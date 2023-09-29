@@ -1,0 +1,6 @@
+Bundle-Name: Event Hooks
+Bundle-SymbolicName: com.pydyniak.blog.samples.event.hooks
+Bundle-Version: 1.0.0
+Liferay-Require-SchemaVersion: 1.0.0
+Liferay-Service: true
+-dsannotations-options: inherit

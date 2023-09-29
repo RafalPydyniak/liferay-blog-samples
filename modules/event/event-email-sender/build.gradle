@@ -1,0 +1,7 @@
+dependencies {
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+	compileOnly project(":modules:event:event-api")
+}
+
+
+group = "event"

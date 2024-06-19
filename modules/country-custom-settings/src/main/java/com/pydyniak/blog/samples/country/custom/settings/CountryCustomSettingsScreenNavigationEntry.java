@@ -22,9 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * @author Pedro Victor Silvestre
- */
 @Component(
 	property = "screen.navigation.entry.order:Integer=10",
 	service = ScreenNavigationEntry.class
